@@ -1,4 +1,5 @@
 'use client';
+import Search from "@/app/search";
 
 export default function HomePage() {
   const handleClick = () => {
@@ -8,12 +9,9 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Welcome to the search Page</h1>
-      <button
-        onClick={() => handleClick()}
-        className="px-6 py-2 text-lg bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-      >
-        Click Me
-      </button>
+      <div className="flex justify-center items-center ">
+        <Search placeholder="Quote Here"></Search>
+      </div>
     </main>
   );
 }
