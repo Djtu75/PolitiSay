@@ -12,6 +12,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-burgundy: #880015;
+  --color-golden: #D6B957;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
