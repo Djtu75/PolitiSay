@@ -40,7 +40,6 @@ export default function HomePage() {
     <main className="flex flex-col items-center justify-center h-full w-full">
       <h1 className="text-3xl font-bold mb-4">Welcome to PolitiSay!</h1>
       <div className="flex justify-center" id="search-bar">
-        <Search placeholder="Search Here"></Search>
       </div>
       <div id="results">
         <ul>
