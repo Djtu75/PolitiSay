@@ -1,6 +1,7 @@
 'use client';
  
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
  
 export default function Search({ placeholder }: { placeholder: string }) {
@@ -20,6 +21,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
   return (
+    <Suspense>
     <div className="relative flex flex-1 flex-shrink-0">
       <label htmlFor="search" className="sr-only">
         Search
@@ -33,5 +35,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
         defaultValue={searchParams.get('query')?.toString()}
       />
     </div>
+    </Suspense>
   );
 }
