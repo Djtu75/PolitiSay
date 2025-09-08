@@ -1,9 +1,15 @@
 'use client';
-import Search from "@/app/search";
+import Search from "@/app/lib/search";
 import Image from "next/image";
+import SearchTable from "@/app/lib/searchTable";
+import Pagination from "@/app/lib/pagination";
 import { quoteOBJ } from "@/app/types";
 import { niconne } from "@/app/fonts";
 import Link from "next/link";
+import TrendingBox from "@/app/lib/trendingBox";
+import { spec } from "node:test/reporters";
+import { error } from "console";
+import { TIMEOUT } from "dns";
 
 const fakeData: quoteOBJ[] = [
   {pID: 1231, qID:333, quote:"to live is to die", date:new Date("2003-12-24"), sourceID:241},
@@ -18,14 +24,14 @@ const fakeData: quoteOBJ[] = [
   {pID: 132643, qID:598, quote:"sup bro", date:new Date("2007-07-07"), sourceID:1234}
 ]
 
-function formatVisitString(numVisits: number): String{
+function formatVisitString(numVisits: number): string{
   if(numVisits < 1000){
     return (numVisits + "");
   }
-  var stringVisits : String = numVisits + "";
+  var stringVisits : string = numVisits + "";
   var svLen : number = stringVisits.length;
   var decimal: number = numVisits > 1000000 ? 6 : 3;
-  var returnStr : String = stringVisits.substring(0, svLen - decimal) + (svLen - decimal == 3 ? "" : ".");
+  var returnStr : string = stringVisits.substring(0, svLen - decimal) + (svLen - decimal == 3 ? "" : ".");
   returnStr += stringVisits.substring(svLen - decimal, 3);
   returnStr += numVisits > 1000000 ? "M" : "K";
   return(returnStr)
@@ -39,47 +45,20 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center h-full w-full">
       <h1 className="text-3xl font-bold mb-4">Welcome to PolitiSay!</h1>
-      <div className="flex justify-center" id="search-bar">
-      </div>
-      <div id="results">
-        <ul>
-          <li>Hey</li>
-          <li>quote</li>
-          <li>sup</li>
-        </ul>
+      <div className="flex flex-col items-center justify-center divide-black divide-y-2" id="search-bar">
+        <Search placeholder="Search quotes..." />
+        <div id="results" className="flex flex-col justify-center items-center py-2">
+          <SearchTable></SearchTable>
+          <Link href={'/advanced-search'}>
+            <button className='px-2 py-1 border-black border-2 rounded-xl text-lg bg-burgundy text-golden rounded hover:bg-burgundyLight transition'>Full Search</button>
+          </Link>
+        </div>
       </div>
       <div className="w-full flex justify-center items-center flex-col space-y-2" id="trending">
         <h2 className="font-bold text-[30px] py-[15px]">Trending Quotes:</h2>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 grid-rows-5 gap-4">
           {fakeData.map((trendingQuote) => (
-            <div
-              key={trendingQuote.qID}
-              className="flex flex-row justify-start items-stretch space-x-3 border-3 border-black rounded-r-[60px] rounded-l-[16px] py-2 px-2 bg-burgundy text-golden divide-x-4 divide-black"
-            > 
-              <div className="flex flex-col justify-center text-center w-[60px]">
-                visits: {formatVisitString(trendingQuote.pID)}
-              </div>
-              <div className="w-[120px] h-[120px] overflow-hidden rounded-full border-2 border-black">
-                <Link href={"/" + trendingQuote.pID}>
-                <Image
-                  src="/Ulysses_S._Grant.jpg"
-                  alt="picture of person"
-                  width={120}
-                  height={120}
-                />
-                </Link>
-              </div>
-              <div className="h-[120px] w-[120px] flex flex-col justify-center flex-1 space-y-1">
-                <Link href={"/" + trendingQuote.qID}>
-                <p className={`${niconne.className} antialiased line-clamp-2 text-3xl text-center border-2 border-golden rounded-r-full rounded-t-full px-2`}>
-                  {trendingQuote.quote}
-                </p>
-                <p className="text-sm text-golden text-center italic">
-                  {trendingQuote.qID}
-                </p>
-                </Link>
-              </div>
-            </div>
+            <TrendingBox key={trendingQuote.qID} qOBJ={trendingQuote} visitCount={formatVisitString(trendingQuote.pID)} width={'w-[120px]'} height={'h-[120px]'}/>
           ))}
         </div>
       </div>
