@@ -1,18 +1,23 @@
-# Step 1: Use an official Node.js image as a base image
-FROM node:16-alpine
+# Step 1: Set the base image
+FROM node:20-alpine AS base
 
 # Step 2: Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Install dependencies
+# Step 3: Copy package.json and package-lock.json (or yarn.lock) into the container
 COPY package.json package-lock.json* ./
+
+# Step 4: Install dependencies
 RUN npm install
 
-# Step 4: Copy the application code
+# Step 5: Copy the rest of the application code into the container
 COPY . .
 
-# Step 5: Expose the port that Next.js uses (default 3000)
+# Step 6: Build the Next.js app
+RUN npm run build
+
+# Step 7: Expose the port that Next.js will run on
 EXPOSE 3000
 
-# Step 6: Command to run Next.js in development mode
+# Step 8: Start the Next.js app in production mode
 CMD ["npm", "run", "dev"]
